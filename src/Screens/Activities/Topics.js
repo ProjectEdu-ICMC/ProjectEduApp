@@ -12,7 +12,6 @@ import {
 
 import { Header } from 'react-native-elements';
 import TopicCard from './components/TopicCard.js';
-//import { data } from './newData.js';
 
 import {
     useNavigation,

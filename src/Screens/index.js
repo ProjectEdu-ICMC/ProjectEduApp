@@ -12,17 +12,6 @@ import AchievementScreen from './Achievements';
 
 import { Icon } from 'react-native-elements';
 
-//Index for all the main screens of the App
-//Defines the Drawer Navigator
-/*Screens:
-  Profile Screen
-  Achievements Screen
-  Activities Screen
-  Ranking Screen
-  Statistics Screen
-  Settings Screen
-*/
-
 const Drawer = createDrawerNavigator();
 
 function AppDrawer() {
@@ -36,7 +25,7 @@ function AppDrawer() {
                         title: 'Perfil',
                         drawerIcon: ({ tintColor }) => (
                             <Icon name="home" color={tintColor} size={24} />
-                        ),
+                        )
                     }}
                 />
                 <Drawer.Screen
@@ -56,7 +45,7 @@ function AppDrawer() {
                         title: 'Conquistas',
                         drawerIcon: ({ tintColor }) => (
                             <Icon name="star" color={tintColor} size={24} />
-                        ),
+                        )
                     }}
                 />
                 <Drawer.Screen
@@ -66,7 +55,7 @@ function AppDrawer() {
                         title: 'Ranking',
                         drawerIcon: ({ tintColor }) => (
                             <Icon name="sort" color={tintColor} size={24} />
-                        ),
+                        )
                     }}
                 />
                 <Drawer.Screen
@@ -80,7 +69,7 @@ function AppDrawer() {
                                 color={tintColor}
                                 size={24}
                             />
-                        ),
+                        )
                     }}
                 />
                 <Drawer.Screen
@@ -90,7 +79,7 @@ function AppDrawer() {
                         title: 'Configurações',
                         drawerIcon: ({ tintColor }) => (
                             <Icon name="settings" color={tintColor} size={24} />
-                        ),
+                        )
                     }}
                 />
             </Drawer.Navigator>
@@ -99,65 +88,3 @@ function AppDrawer() {
 }
 
 export default AppDrawer;
-
-//createDrawerNavigator(
-//    {
-//        //Perfil: {
-//        //    screen: PerfilScreen,
-//        //    navigationOptions: {
-//        //        title: 'Profile',
-//        //        drawerIcon: ({ tintColor }) => (
-//        //            <Icon name="home" color={tintColor} size={24} />
-//        //        ),
-//        //    },
-//        //},
-//        //Activities: {
-//        //    screen: ActivitiesScreen,
-//        //    navigationOptions: {
-//        //        title: 'Activities',
-//        //        drawerIcon: ({ tintColor }) => (
-//        //            <Icon name="work" color={tintColor} size={24} />
-//        //        ),
-//        //    },
-//        //},
-//        //Achievements: {
-//        //    screen: AchievementScreen,
-//        //    navigationOptions: {
-//        //        title: 'Achievements',
-//        //        drawerIcon: ({ tintColor }) => (
-//        //            <Icon name="star" color={tintColor} size={24} />
-//        //        ),
-//        //    },
-//        //},
-//        //Ranking: {
-//        //    screen: RankingScreen,
-//        //    navigationOptions: {
-//        //        title: 'Ranking',
-//        //        drawerIcon: ({ tintColor }) => (
-//        //            <Icon name="sort" color={tintColor} size={24} />
-//        //        ),
-//        //    },
-//        //},
-//        //Statistics: {
-//        //    screen: StatisticsScreen,
-//        //    navigationOptions: {
-//        //        title: 'Statistics',
-//        //        drawerIcon: ({ tintColor }) => (
-//        //            <Icon name="graphic-eq" color={tintColor} size={24} />
-//        //        ),
-//        //    },
-//        //},
-//        Settings: {
-//            screen: SettingsScreen,
-//            navigationOptions: {
-//                title: 'Settings',
-//                drawerIcon: ({ tintColor }) => (
-//                    <Icon name="settings" color={tintColor} size={24} />
-//                ),
-//            },
-//        },
-//    },
-//    {
-//        initialRouteName: 'Activities',
-//    }
-//);

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-//import { createAppContainer } from 'react-navigation';
 import LoginScreen from './Login';
 import AppScreen from './Screens';
 import LoadingScreen from './Loading';

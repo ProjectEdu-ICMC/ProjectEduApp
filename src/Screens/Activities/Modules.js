@@ -91,15 +91,7 @@ function Modules() {
 
     const subscribedCards = modules?.length
         ? modules.map((mod, index) => (
-              <Card
-                  key={mod.id}
-                  //image={{ uri: mod.image ? mod.image : 'a' }}
-                  //imageProps={{
-                  //    placeholderStyle: {
-                  //        backgroundColor: '#03A9F4'
-                  //    }
-                  //}}
-              >
+              <Card key={mod.id}>
                   <Card.Image
                       placeholderStyle={{ backgroundColor: '#03a9f4' }}
                       style={styles.cardImage}
@@ -110,11 +102,6 @@ function Modules() {
                               {mod.name}
                           </Card.Title>
                       </View>
-                      {/*
-                    <Text style={{marginBottom: 10, textAlign: 'center'}}>
-                        Generic Module Title
-                    </Text>
-                    */}
                       <Button
                           type="solid"
                           onPress={() => {
@@ -139,21 +126,7 @@ function Modules() {
 
     const searchCards = searchModules?.length
         ? searchModules.map((mod, index) => (
-              <Card
-                  key={mod.id}
-                  //image={{ uri: mod.image ? mod.image : 'a' }}
-                  //imageProps={{
-                  //    placeholderStyle: {
-                  //        backgroundColor: '#03A9F4'
-                  //    }
-                  //}}
-                  //title={mod.name}
-              >
-                  {/*
-                    <Text style={{marginBottom: 10, textAlign: 'center'}}>
-                        Generic Module Title
-                    </Text>
-                    */}
+              <Card key={mod.id}>
                   <Card.Image
                       placeholderStyle={{ backgroundColor: '#03a9f4' }}
                       style={styles.cardImage}
@@ -164,18 +137,8 @@ function Modules() {
                               {mod.name}
                           </Card.Title>
                       </View>
-                      {/*
-                    <Text style={{marginBottom: 10, textAlign: 'center'}}>
-                        Generic Module Title
-                    </Text>
-                    */}
                       <Button
                           type="solid"
-                          //onPress={() => {
-                          //    navigation.navigate('Topics', {
-                          //        mod: mod.id
-                          //    });
-                          //}}
                           onPress={() => subscribe(mod.id)}
                           backgroundColor="#03A9F4"
                           buttonStyle={{
@@ -218,7 +181,6 @@ function Modules() {
                         onChangeText={(text) => {
                             setValue('search', text);
                         }}
-                        //editable={answered === undefined}
                     />
                     <Button
                         disabled={fetching}
@@ -237,7 +199,6 @@ const styles = StyleSheet.create({
     singleLineInput: {
         padding: 8,
         backgroundColor: 'white',
-        //elevation: 2,
         borderRadius: 3,
         flexGrow: 1
     },

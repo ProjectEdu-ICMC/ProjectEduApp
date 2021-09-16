@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { Header } from 'react-native-elements';
-//import Orientation from 'react-native-orientation';
 import * as firebase from 'firebase';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
@@ -10,14 +9,6 @@ export default function Perfil() {
   const navigation = useNavigation();
   const [data, setData] = useState({});
   const [fetching, setFetching] = useState(false);
-  //state = {
-  //      name: '',
-  //      email:'',
-  //      photo:null,
-  //      points:'',
-  //      progress:'',
-  //      currentDate: new Date(),
-  //}
 
   useEffect(() => {
     fetchData();
@@ -45,43 +36,6 @@ export default function Perfil() {
       });
   };
 
-  //Receives all the user information from the database
-  //componentDidMount(){
-  //  //this.setState({email:firebase.auth().currentUser.email})
-  //  // TODO: create endpoint to get user info
-  //  //let userid = firebase.auth().currentUser.uid
-  //  //let usersRef = firebase.database().ref("users/"+userid);
-
-  //  //usersRef.on("value", (data) => {
-  //  //  let points = data.val().points
-  //  //
-  //  //  this.setState({points:points})
-  //  //  this.setState({name:data.val().name})
-  //  //  this.setState({progress:data.val().progress})
-  //  //  this.setState({email:firebase.auth().currentUser.email})
-
-  //  //  if(firebase.auth().currentUser.photoURL===null)
-  //  //  {
-  //  //      this.setState({photo:data.val().image})
-  //  //      firebase.auth().currentUser.updateProfile({
-  //  //        photoURL:data.val().image
-  //  //      })
-  //  //  }
-  //  //  else
-  //  //  {
-  //  //    this.setState({photo:firebase.auth().currentUser.photoURL})
-  //  //  }
-  //  //});
-
-  //  // Orientation.addOrientationListener(this._orientationDidChange);
-
-  //}
-
-  // _orientationDidChange = (orientation) => {
-  //   alert("changed")
-  // }
-
-  //render() {
   return (
     <View>
       {/*Screen Header Informatiom */}
@@ -100,68 +54,25 @@ export default function Perfil() {
         <View style={styles.header}></View>
         <Image
           style={styles.avatar}
-          source={{ uri: firebase.auth().currentUser.photoURL || "https://isaojose.com.br/wp-content/uploads/2020/12/blank-profile-picture-mystery-man-avatar-973460.jpg" }}
+          source={{
+            uri:
+              firebase.auth().currentUser.photoURL ||
+              'https://isaojose.com.br/wp-content/uploads/2020/12/blank-profile-picture-mystery-man-avatar-973460.jpg'
+          }}
         />
         <View style={styles.body}>
           <View style={styles.bodyContent}>
-            <Text style={styles.name}>{firebase.auth().currentUser.displayName}</Text>
+            <Text style={styles.name}>
+              {firebase.auth().currentUser.displayName}
+            </Text>
             <Text style={styles.info}>{firebase.auth().currentUser.email}</Text>
             <Text style={styles.description}>Pontuação: {data.points}</Text>
             <Text style={styles.description}>Progresso: {data.progress}%</Text>
-
-            {/*Renders the 3 button on the profile screen
-                Activies
-                Ranking
-                Settings
-              */}
-            {/* <View style = {{flexDirection:"row",marginTop:70, alignItems:"center"}}>
-                <TouchableOpacity style={styles.followButtonPlay}
-                     onPress={() => {this.props.navigation.navigate("Activities")}}
-                >
-                    <View style = {{margin:5}}>
-                        <Image style={styles.imageIcon} 
-                            source={{uri:"https://img.icons8.com/color/48/000000/school.png"}}
-                            resizeMode = 'contain'
-                        />
-                        <Text style = {{textAlign:"center"}}>
-                            Activities
-                        </Text>
-                    </View>
-                </TouchableOpacity>     
-                <TouchableOpacity style={styles.followButtonPlay}
-                     onPress={() => {this.props.navigation.navigate("Ranking")}}
-                >
-                    <View style = {{margin:5}}>
-                        <Image style={styles.imageIcon} 
-                            source={{uri:"https://img.icons8.com/ultraviolet/40/000000/leaderboard.png"}}
-                            resizeMode = 'contain'
-                        />
-                        <Text style = {{textAlign:"center"}}>
-                            Ranking
-                        </Text>
-                    </View>
-                    
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.followButtonPlay} 
-                    onPress={() => {this.props.navigation.navigate("Settings")}}
-                >
-                    <View style = {{margin:5}}>
-                        <Image style={styles.imageIcon} 
-                            resizeMode = 'contain'
-                            source={{uri:"https://img.icons8.com/plasticine/100/000000/settings.png"}}
-                        />
-                        <Text style = {{textAlign:"center"}}>
-                            Settings
-                        </Text>
-                    </View>
-                </TouchableOpacity>
-            </View>  */}
           </View>
         </View>
       </View>
     </View>
   );
-  //}
 }
 
 const styles = StyleSheet.create({

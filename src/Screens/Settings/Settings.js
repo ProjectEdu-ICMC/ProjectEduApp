@@ -1,116 +1,103 @@
 import React from 'react';
-import { View,StyleSheet } from 'react-native';
-import { Header, ListItem } from 'react-native-elements'
-import * as firebase from 'firebase'
+import { View, StyleSheet } from 'react-native';
+import { Header, ListItem } from 'react-native-elements';
+import * as firebase from 'firebase';
 
 class Settings extends React.Component {
-
-//Hides the Header
-//It's created manually
-static navigationOptions = {
+  //Hides the Header
+  //It's created manually
+  static navigationOptions = {
     header: null
-}
+  };
 
-constructor(props) {
+  constructor(props) {
     super(props);
     this.state = {
-      listSettings:
-      [
+      listSettings: [
         {
-            title:"Sobre",
-            icon:"info"
+          title: 'Sobre',
+          icon: 'info'
         },
         {
-            title:"Ajuda",
-            icon:"search"
+          title: 'Ajuda',
+          icon: 'search'
         },
         {
-            title:"Atualizar Perfil",
-            icon:"refresh"
+          title: 'Atualizar Perfil',
+          icon: 'refresh'
         },
         {
-            title:"Notificações",
-            icon:"call"
+          title: 'Notificações',
+          icon: 'call'
         },
         {
-            title:"Sair do App",
-            icon:"pause"
+          title: 'Sair do App',
+          icon: 'pause'
         }
       ]
-    }
-}
+    };
+  }
+
   //Function for Logging out the user
   async OnLogout() {
     try {
-        await firebase.auth().signOut()
-        //.then(() => this.props.navigation.navigate('LoginScreen'))
-        console.log("Logged Out!");
+      await firebase.auth().signOut();
+      console.log('Logged Out!');
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
-}
+  }
 
   render() {
-
-    const list = this.state.listSettings
+    const list = this.state.listSettings;
 
     return (
       <View>
         {/*Screen Header Information */}
         <Header
-          backgroundColor = '#1e272e'
+          backgroundColor="#1e272e"
           leftComponent={{
-          icon: 'menu',
-          color: '#fff',
-          onPress: () => this.props.navigation.openDrawer(),
+            icon: 'menu',
+            color: '#fff',
+            onPress: () => this.props.navigation.openDrawer()
           }}
           centerComponent={{ text: 'Configurações', style: { color: '#fff' } }}
-          rightComponent={{ 
-          icon: 'portrait', 
-          color: '#fff',
-          onPress: () => this.props.navigation.navigate("Perfil")
+          rightComponent={{
+            icon: 'portrait',
+            color: '#fff',
+            onPress: () => this.props.navigation.navigate('Perfil')
           }}
         />
-      {/*Renders the settings list */}
-      {
-      list.map((l, i) => (
-        <ListItem
-          key={i}
-          //title={l.title}
-          bottomDivider = {true}
-          chevron = {true}
-          leftIcon={{
-            name: l.icon
-          }}
-          onPress = {
-            (function(){
-              if(l.title=="Sobre")
-              {
-                this.props.navigation.navigate("Info")
+        {/*Renders the settings list */}
+        {list.map((l, i) => (
+          <ListItem
+            key={i}
+            bottomDivider={true}
+            chevron={true}
+            leftIcon={{
+              name: l.icon
+            }}
+            onPress={function () {
+              if (l.title == 'Sobre') {
+                this.props.navigation.navigate('Info');
               }
-              if(l.title=="Ajuda")
-              {
-                this.props.navigation.navigate("Help")
+              if (l.title == 'Ajuda') {
+                this.props.navigation.navigate('Help');
               }
-              if(l.title=="Atualizar Perfil")
-              {
-                this.props.navigation.navigate("UpdateProfile")
+              if (l.title == 'Atualizar Perfil') {
+                this.props.navigation.navigate('UpdateProfile');
               }
-              if(l.title=="Notificações")
-              {
-                this.props.navigation.navigate("Notification")
+              if (l.title == 'Notificações') {
+                this.props.navigation.navigate('Notification');
               }
-              if(l.title=="Sair do App")
-              {
-                  this.OnLogout()
+              if (l.title == 'Sair do App') {
+                this.OnLogout();
               }
-            }).bind(this)
-          }
-        >
-          <ListItem.Title>{l.title}</ListItem.Title>
-        </ListItem>
-      ))
-      }    
+            }.bind(this)}
+          >
+            <ListItem.Title>{l.title}</ListItem.Title>
+          </ListItem>
+        ))}
       </View>
     );
   }
@@ -119,13 +106,13 @@ export default Settings;
 
 const styles = StyleSheet.create({
   container: {
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-  buttonContainer:{
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  buttonContainer: {
     width: 400,
     height: 100,
     alignSelf: 'center',
-    alignContent: 'center',
+    alignContent: 'center'
   }
 });

@@ -1,50 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, ScrollView, RefreshControl, Image, Text } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  RefreshControl,
+  Image,
+  Text
+} from 'react-native';
 import { Badge, ListItem, Header, Card, Divider } from 'react-native-elements';
 import * as firebase from 'firebase';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
-
 
 function Ranking() {
   const navigation = useNavigation();
   const [points, setPoints] = useState(0);
   const [data, setData] = useState([]);
   const [fetching, setFetching] = useState(false);
-
-  //constructor(props) {
-  //  super(props);
-  //  this.state = {
-  //    npList:[],
-  //    profilepic:firebase.auth().currentUser.photoURL,
-  //    name:firebase.auth().currentUser.displayName,
-  //    points:""
-  //  }
-  //}
-  //  //Creates an Array of users score
-  //  //Composed by the best 10 users
-  // componentDidMount()
-  //{
-  //  // TODO: create ranking endpoint
-  //  //let usersRef = firebase.database().ref("leaderbords/");
-  //  //usersRef.orderByChild("points").limitToFirst(10).on("child_added", (data)=> {
-  //  ////The leaderboards table is composed by negative numbers because Firebase just organizes the information in ascending order.
-  //  //let points = (data.val().points)*(-1)
-  //  //let newArr = [];
-  //  //let obj = {name: data.val().name,points:points}
-  //  //newArr.push(obj)
-  //  //let Aux = this.state.npList;
-  //  //Array.prototype.push.apply(Aux,newArr)
-  //  //this.setState({npList:Aux})
-  //  //})
-  //  //let userid = firebase.auth().currentUser.uid
-  //  //let usersRefId = firebase.database().ref("users/"+userid);
-
-  //  //usersRefId.on("value", (data) => {
-  //  //  let points = data.val().points
-  //  //  this.setState({points:points})
-  //  //  })
-  //}
 
   useEffect(() => {
     fetchData();
@@ -79,12 +51,9 @@ function Ranking() {
         console.log(err);
       });
   };
-  //render() {
-
-  //const list = this.state.npList
 
   return (
-  <View>
+    <View>
       {/*Header Screen Information */}
       <Header
         backgroundColor="#1e272e"
@@ -101,63 +70,57 @@ function Ranking() {
         }}
       />
 
-    <ScrollView
+      <ScrollView
         refreshControl={
           <RefreshControl refreshing={fetching} onRefresh={fetchData} />
         }
-    >
-      {/*Card for user information*/}
-      <Card containerStyle={{ backgroundColor: '#40739e', marginBottom: 20 }}>
-        <View
-          style={{ flexDirection: 'row', alignItems: 'center', margin: 10 }}
-        >
-          <Image
-            style={styles.imageCard}
-            source={{ uri: firebase.auth().currentUser.photoURL || "https://isaojose.com.br/wp-content/uploads/2020/12/blank-profile-picture-mystery-man-avatar-973460.jpg" }}
-          />
-          <View style={{ margin: 10 }}>
-            <Text style={{ fontSize: 15, color: '#ffffff' }}>
-              Nome: {firebase.auth().currentUser.displayName}
-            </Text>
-            <Text style={{ fontSize: 15, color: '#ffffff' }}>Pontuação: {points}</Text>
+      >
+        {/*Card for user information*/}
+        <Card containerStyle={{ backgroundColor: '#40739e', marginBottom: 20 }}>
+          <View
+            style={{ flexDirection: 'row', alignItems: 'center', margin: 10 }}
+          >
+            <Image
+              style={styles.imageCard}
+              source={{
+                uri:
+                  firebase.auth().currentUser.photoURL ||
+                  'https://isaojose.com.br/wp-content/uploads/2020/12/blank-profile-picture-mystery-man-avatar-973460.jpg'
+              }}
+            />
+            <View style={{ margin: 10 }}>
+              <Text style={{ fontSize: 15, color: '#ffffff' }}>
+                Nome: {firebase.auth().currentUser.displayName}
+              </Text>
+              <Text style={{ fontSize: 15, color: '#ffffff' }}>
+                Pontuação: {points}
+              </Text>
+            </View>
           </View>
-        </View>
-      </Card>
+        </Card>
 
-      <Divider style={{ backgroundColor: '#40739e', height: 10 }} />
+        <Divider style={{ backgroundColor: '#40739e', height: 10 }} />
 
-      <Card containerStyle={{ backgroundColor: '#40739e', marginBottom: 20 }}>
-        <Text style={{ textAlign: 'center', color: '#ffffff', fontSize: 25 }}>
-          Top 10
-        </Text>
-      </Card>
-      {/*List Top 10 Uses */}
-      {data.map((user, i) => (
-        <ListItem
-          key={i}
-          //title={user.name}
-          //subtitle={'Points: ' + user.points}
-          topDivider={true}
-          bottomDivider={true}
-          //badge={{
-          //  value: i + 1,
-          //  textStyle: { color: 'white' },
-          //  containerStyle: { marginTop: -20 }
-          //}}
-        >
-          <ListItem.Title>{user.name}</ListItem.Title>
-          <ListItem.Subtitle>{user.points}</ListItem.Subtitle>
-          <Badge
-            value={i + 1}
-            textStyle={{ color: 'white' }}
-            containerStyle={{ marginTop: -20 }}
-          />
-        </ListItem>
-      ))}
-    </ScrollView>
-  </View>
+        <Card containerStyle={{ backgroundColor: '#40739e', marginBottom: 20 }}>
+          <Text style={{ textAlign: 'center', color: '#ffffff', fontSize: 25 }}>
+            Top 10
+          </Text>
+        </Card>
+        {/*List Top 10 Uses */}
+        {data.map((user, i) => (
+          <ListItem key={i} topDivider={true} bottomDivider={true}>
+            <ListItem.Title>{user.name}</ListItem.Title>
+            <ListItem.Subtitle>{user.points}</ListItem.Subtitle>
+            <Badge
+              value={i + 1}
+              textStyle={{ color: 'white' }}
+              containerStyle={{ marginTop: -20 }}
+            />
+          </ListItem>
+        ))}
+      </ScrollView>
+    </View>
   );
-  //}
 }
 export default Ranking;
 

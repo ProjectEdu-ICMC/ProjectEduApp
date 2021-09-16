@@ -14,7 +14,7 @@ const Stack = createStackNavigator();
 function LoginStack() {
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="SignInScreen">
+            <Stack.Navigator headerMode="none" initialRouteName="SignInScreen">
                 <Stack.Screen
                     name="SignInScreen"
                     component={SignInScreen}
