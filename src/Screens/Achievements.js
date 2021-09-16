@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { Header, Button } from 'react-native-elements';
 import Modal from 'react-native-modal';
+import axios from 'axios';
 import * as firebase from 'firebase';
 
 import { View } from 'react-native-animatable';
@@ -17,8 +18,8 @@ import { View } from 'react-native-animatable';
 export default class Achievements extends Component {
   //Achievements List
   state = {
-    data: [
-      {
+    data: {
+      BrightBeginning: {
         id: 0,
         description: 'Terminou o primeiro tópico de estudo',
         name: 'Início Brilhante', //Finished first lesson
@@ -26,7 +27,7 @@ export default class Achievements extends Component {
           'https://image.freepik.com/free-vector/illustration-power-button_53876-5834.jpg',
         status: null
       },
-      {
+      Respect: {
         id: 1,
         description: 'Finalizou um exercício',
         name: '#Respeito', //Finished activities part from a lesson
@@ -34,7 +35,8 @@ export default class Achievements extends Component {
           'https://image.freepik.com/free-vector/illustration-business-target-icon_53876-5899.jpg',
         status: null
       },
-      {
+
+      RockstarRookie: {
         id: 2,
         description: 'Terminou um módulo',
         name: 'Novato Rockstar', //Finished a module
@@ -42,7 +44,7 @@ export default class Achievements extends Component {
           'https://image.freepik.com/free-vector/business-man-holding-job-done-check-sign_3446-560.jpg',
         status: null
       },
-      {
+      LimelightAward: {
         id: 3,
         description: 'Chegou a 500 pontos',
         name: 'Centro das Atenções', //Reached 500 points - Bronze Medal
@@ -50,7 +52,7 @@ export default class Achievements extends Component {
           'https://image.freepik.com/free-vector/bronzed-medal-design_1166-32.jpg',
         status: null
       },
-      {
+      SpotlightAward: {
         id: 4,
         description: 'Chegou a 1000 pontos',
         name: 'Destaque', //Reached 1000 poinst - Silver Medal
@@ -58,7 +60,7 @@ export default class Achievements extends Component {
           'https://image.freepik.com/free-vector/silvery-medal-design_1166-23.jpg',
         status: null
       },
-      {
+      HeroAward: {
         id: 5,
         description: 'Chegou a 1500 pontos',
         name: 'Herói', //Reached 1500 poinst - Gold Medal
@@ -66,7 +68,7 @@ export default class Achievements extends Component {
           'https://image.freepik.com/free-vector/golden-medal-design_1166-34.jpg',
         status: null
       },
-      {
+      ShiningStarAward: {
         id: 6,
         description: 'Chegou a 2000 pontos',
         name: 'Estrela Brilhante', //Reached 2000 poinst - Bronze Trophy
@@ -74,7 +76,7 @@ export default class Achievements extends Component {
           'https://cdn0.iconfinder.com/data/icons/gamification/512/cup_bronze-256.png',
         status: null
       },
-      {
+      SuperstarAward: {
         id: 7,
         description: 'Chegou a 3000 pontos',
         name: 'Super Estrela', //Reached 3000 poinst - Silver Trophy
@@ -82,7 +84,7 @@ export default class Achievements extends Component {
           'https://cdn2.iconfinder.com/data/icons/gamification/512/cup_silver_kopia-256.png',
         status: null
       },
-      {
+      PresidentsAward: {
         id: 8,
         description: 'Chegou a 4000 pontos',
         name: 'Presidente', //Reached 4000 poinst - Gold Trophy
@@ -90,7 +92,7 @@ export default class Achievements extends Component {
           'https://cdn2.iconfinder.com/data/icons/gamification/512/cup_gold_-_kopia-256.png',
         status: null
       },
-      {
+      HonorClub: {
         id: 9,
         description: 'Chegou a 10000 pontos',
         name: 'Clube de Honra', //Reached 10000 poinst - Crown Trophy
@@ -98,7 +100,7 @@ export default class Achievements extends Component {
           'https://cdn0.iconfinder.com/data/icons/gamification-flat-awards-and-badges/500/crown1-256.png',
         status: null
       },
-      {
+      DiamondClub: {
         id: 10,
         description: 'Chegou a 20000 pontos',
         name: 'Clube de Diamante', //Reached 20000 poinst - Diamond Trophy
@@ -106,37 +108,41 @@ export default class Achievements extends Component {
           'https://cdn0.iconfinder.com/data/icons/flat-community-and-achievement-badges/500/diamond-256.png',
         status: null
       }
-    ],
+    },
     idSelected: null,
     isVisible: false
   };
 
   clickEventListener = (item) => {
-    this.setState({ idSelected: item.id });
+    this.setState({ idSelected: item });
     this.setState({ isVisible: true });
   };
 
   componentDidMount() {
-    // TODO: create endpoint
-    //Receives each achievement status from the database and updates
-    //let userId = firebase.auth().currentUser.uid
-    //let achievementRef = firebase.database().ref("/achievements/"+userId)
-    //  achievementRef.on("value", (info) => {
-    //    let dataAchievements = this.state.data
-    //    console.log(dataAchievements)
-    //    dataAchievements[0].status = info.val().BrightBeginning
-    //    dataAchievements[1].status = info.val().Respect
-    //    dataAchievements[2].status = info.val().RockstarRookie
-    //    dataAchievements[3].status = info.val().LimelightAward
-    //    dataAchievements[4].status = info.val().SpotlightAward
-    //    dataAchievements[5].status = info.val().HeroAward
-    //    dataAchievements[6].status = info.val().ShiningStarAward
-    //    dataAchievements[7].status = info.val().SuperstarAward
-    //    dataAchievements[8].status = info.val().PresidentsAward
-    //    dataAchievements[9].status = info.val().HonorClub
-    //    dataAchievements[10].status = info.val().DiamondClub
-    //    this.setState({data:dataAchievements})
-    //  })
+    const user = firebase.auth().currentUser;
+    user?.getIdToken().then((token) => {
+      axios
+        .get('http://192.168.0.29:8000/me', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        .then((res) => {
+          const { data } = res;
+          const achievements = data?.achievements;
+
+          let dataState = this.state.data;
+          if (achievements != undefined) {
+            for (const achName in achievements) {
+              dataState[achName].status = 'Completo';
+            }
+          }
+          this.setState({ data: dataState });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
   }
 
   render() {
@@ -201,9 +207,9 @@ export default class Achievements extends Component {
           <FlatList
             style={styles.contentList}
             columnWrapperStyle={styles.listContainer}
-            data={dataAchieves}
+            data={Object.keys(dataAchieves)}
             keyExtractor={(item) => {
-              return item.id.toString();
+              return dataAchieves[item].id.toString();
             }}
             renderItem={({ item }) => {
               return (
@@ -213,11 +219,11 @@ export default class Achievements extends Component {
                     this.clickEventListener(item);
                   }}
                 >
-                  <Image style={styles.image} source={{ uri: item.image }} />
+                  <Image style={styles.image} source={{ uri: dataAchieves[item].image }} />
                   <View style={styles.cardContent}>
-                    <Text style={styles.name}>{item.name}</Text>
+                    <Text style={styles.name}>{dataAchieves[item].name}</Text>
                     <Text style={styles.count}>
-                      Estado: {item.status || 'Não conquistado'}
+                      Estado: {dataAchieves[item].status || 'Não conquistado'}
                     </Text>
                     <TouchableOpacity
                       style={styles.followButton}
