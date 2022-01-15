@@ -3,12 +3,14 @@ import LoginScreen from './Login';
 import AppScreen from './Screens';
 import LoadingScreen from './Loading';
 
-import * as firebase from 'firebase';
+import { getAuth, onAuthStateChanged } from '@firebase/auth';
 
-function Switch(props) {
+function Switch({}) {
     const [screen, setScreen] = useState('loading');
     console.log(screen);
-    firebase.auth().onAuthStateChanged((user) => {
+    
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
         if (user) {
             setScreen('app');
         } else {

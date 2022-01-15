@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Header, ListItem } from 'react-native-elements';
-import * as firebase from 'firebase';
+import { getAuth, signOut } from '@firebase/auth';
 
 class Settings extends React.Component {
   //Hides the Header
@@ -36,12 +36,14 @@ class Settings extends React.Component {
         }
       ]
     };
+
+    this.auth =  getAuth();
   }
 
   //Function for Logging out the user
   async OnLogout() {
     try {
-      await firebase.auth().signOut();
+      await signOut(this.auth);
       console.log('Logged Out!');
     } catch (error) {
       console.log(error);

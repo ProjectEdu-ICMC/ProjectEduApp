@@ -11,7 +11,7 @@ import {
 import { Header, Button } from 'react-native-elements';
 import Modal from 'react-native-modal';
 import axios from 'axios';
-import * as firebase from 'firebase';
+import { getAuth } from '@firebase/auth';
 
 import { View } from 'react-native-animatable';
 
@@ -119,7 +119,8 @@ export default class Achievements extends Component {
   };
 
   componentDidMount() {
-    const user = firebase.auth().currentUser;
+    const auth = getAuth();
+    const user = auth.currentUser;
     user?.getIdToken().then((token) => {
       axios
         .get('http://192.168.0.29:8000/me', {

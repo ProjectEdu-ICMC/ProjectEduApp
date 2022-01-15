@@ -1,8 +1,5 @@
 import React from 'react';
 import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
-import * as firebase from 'firebase';
-import * as Permissions from 'expo-permissions';
-import { Notifications } from 'expo';
 
 function Loading() {
     return (

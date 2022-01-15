@@ -11,28 +11,35 @@ import {
 } from 'react-native';
 import { Header, Card } from 'react-native-elements';
 import DialogInput from 'react-native-dialog-input';
-import * as firebase from 'firebase';
+import { getAuth, sendPasswordResetEmail } from '@firebase/auth';
 
 export default class ImagePickerExample extends React.Component {
-  state = {
-    image: firebase.auth().currentUser.photoURL,
-    email: firebase.auth().currentUser.email,
-    name: firebase.auth().currentUser.displayName,
-    isPressed: false,
-    isEditingName: false,
-    isEditingEmail: false,
-    userRef: undefined,
-    rankingRef: undefined
-  };
+  
+
+  constructor(props) {
+    super(props);
+
+    this.auth = getAuth();
+
+    this.state = {
+      image: this.auth.currentUser.photoURL,
+      email: this.auth.currentUser.email,
+      name: this.auth.currentUser.displayName,
+      isPressed: false,
+      isEditingName: false,
+      isEditingEmail: false,
+      userRef: undefined,
+      rankingRef: undefined
+    };
+
+  }
 
   //Function for recover user password
   async onRecoverButton() {
     this.setState({ isPressed: true });
 
     try {
-      firebase
-        .auth()
-        .sendPasswordResetEmail(this.state.email)
+      sendPasswordResetEmail(this.auth, this.state.email)
         .catch((error) => {
           console.log(error);
           Alert.alert(error.message);
@@ -46,15 +53,13 @@ export default class ImagePickerExample extends React.Component {
   changeName = (text) => {
     if (text.length > 1) {
       this.setState({ name: text });
-      firebase
-        .auth()
-        .currentUser.updateProfile({
-          displayName: text
-        })
-        .catch((error) => {
-          console.log('error ', error);
-          Alert.alert(error.message);
-        });
+      this.auth.currentUser.updateProfile({
+        displayName: text
+      })
+      .catch((error) => {
+        console.log('error ', error);
+        Alert.alert(error.message);
+      });
       this.setState({ isEditingName: false });
     } else alert('Seu nome deve ter pelo menos 2 caracteres');
   };
@@ -111,7 +116,7 @@ export default class ImagePickerExample extends React.Component {
               style={{ width: 100, height: 100, borderRadius: 20 }}
               source={{
                 uri:
-                  firebase.auth().currentUser.photoURL ||
+                  this.auth.currentUser.photoURL ||
                   'https://isaojose.com.br/wp-content/uploads/2020/12/blank-profile-picture-mystery-man-avatar-973460.jpg'
               }}
             />

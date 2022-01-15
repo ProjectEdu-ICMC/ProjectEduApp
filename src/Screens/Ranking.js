@@ -8,7 +8,7 @@ import {
   Text
 } from 'react-native';
 import { Badge, ListItem, Header, Card, Divider } from 'react-native-elements';
-import * as firebase from 'firebase';
+import { getAuth } from '@firebase/auth';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 
@@ -18,12 +18,14 @@ function Ranking() {
   const [data, setData] = useState([]);
   const [fetching, setFetching] = useState(false);
 
+  const auth = getAuth();
+
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
   const fetchData = async () => {
-    const user = firebase.auth().currentUser;
+    const user = auth.currentUser;
     const token = await user?.getIdToken();
 
     if (!token) {
@@ -84,13 +86,13 @@ function Ranking() {
               style={styles.imageCard}
               source={{
                 uri:
-                  firebase.auth().currentUser.photoURL ||
+                  auth.currentUser.photoURL ||
                   'https://isaojose.com.br/wp-content/uploads/2020/12/blank-profile-picture-mystery-man-avatar-973460.jpg'
               }}
             />
             <View style={{ margin: 10 }}>
               <Text style={{ fontSize: 15, color: '#ffffff' }}>
-                Nome: {firebase.auth().currentUser.displayName}
+                Nome: {auth.currentUser.displayName}
               </Text>
               <Text style={{ fontSize: 15, color: '#ffffff' }}>
                 Pontuação: {points}

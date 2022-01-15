@@ -10,7 +10,7 @@ import {
   KeyboardAvoidingView
 } from 'react-native';
 
-import * as firebase from 'firebase';
+import { getAuth, sendPasswordResetEmail }from '@firebase/auth';
 
 export default class Recover extends Component {
   constructor(props) {
@@ -38,9 +38,8 @@ export default class Recover extends Component {
   async onRecoverButton() {
     const { email } = this.state;
     try {
-      firebase
-        .auth()
-        .sendPasswordResetEmail(email)
+      const auth = getAuth()
+      sendPasswordResetEmail(auth, email)
         .catch((error) => {
           console.log(error);
           Alert.alert(error.message);

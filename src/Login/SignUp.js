@@ -17,7 +17,7 @@ import { ImagePicker, Notifications } from 'expo';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useForm } from 'react-hook-form';
 
-import * as firebase from 'firebase';
+import { getAuth, createUserWithEmailAndPassword} from '@firebase/auth';
 import axios from 'axios';
 
 export default function SignUp() {
@@ -44,29 +44,22 @@ export default function SignUp() {
     //Function responsible for creating the user and registering information on the database
     const onSignUpPress = async ({ name, birthday, email, password }) => {
         try {
-            await firebase
-                .auth()
-                //creates the user with email and password
-                .createUserWithEmailAndPassword(email, password)
+            const auth = getAuth();
+            await createUserWithEmailAndPassword(auth, email, password)
                 .then(async () => {
                     //update user information on firebase - Name and Email
-                    firebase
-                        .auth()
-                        .currentUser.updateProfile({
-                            displayName: name,
-                            email: email
-                        })
-                        .catch((error) => {
-                            console.log('error ', error);
-                            Alert.alert(error.message);
-                        });
+                    auth.currentUser.updateProfile({
+                        displayName: name,
+                        email: email
+                    })
+                    .catch((error) => {
+                        console.log('error ', error);
+                        Alert.alert(error.message);
+                    });
                     console.log('Account created');
 
                     ////Registering User info
-                    const userId = firebase.auth().currentUser.uid;
-                    const token = await firebase
-                        .auth()
-                        .currentUser?.getIdToken();
+                    const token = auth.currentUser?.getIdToken();
 
                     if (!token) {
                         setFetching(false);

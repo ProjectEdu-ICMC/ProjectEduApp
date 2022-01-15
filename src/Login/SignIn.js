@@ -11,7 +11,7 @@ import {
     ScrollView,
     KeyboardAvoidingView
 } from 'react-native';
-import * as firebase from 'firebase';
+import { getAuth, signInWithEmailAndPassword } from '@firebase/auth';
 
 export default class SignIn extends Component {
     state = {
@@ -29,14 +29,14 @@ export default class SignIn extends Component {
     };
     //Function that is responsible for the user login
     async onLogin() {
-        const { email, password, currentDate } = this.state;
+        const { email, password } = this.state;
         try {
+            const auth = getAuth();
             //Sign in the user
-            await firebase.auth().signInWithEmailAndPassword(email, password);
+            await signInWithEmailAndPassword(auth, email, password);
             console.log('Logged In!');
 
-            let userId = firebase.auth().currentUser.uid;
-            let userNamePath = '/users/' + userId;
+            let userId = auth.currentUser.uid;
         } catch (error) {
             console.log(error.toString());
             Alert.alert(error.message);

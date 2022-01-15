@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 
-import * as firebase from 'firebase';
+import { getAuth } from '@firebase/auth';
 
 function Modules() {
     const navigation = useNavigation();
@@ -15,9 +15,11 @@ function Modules() {
     const [fetching, setFetching] = useState(false);
     const { register, handleSubmit, errors, setValue, getValues } = useForm();
 
+    const auth = getAuth();
+
     useEffect(() => {
         const fetch = async () => {
-            const user = firebase.auth().currentUser;
+            const user = auth.currentUser;
             const token = await user?.getIdToken();
 
             if (!token) {
@@ -60,7 +62,7 @@ function Modules() {
 
     const subscribe = async (module) => {
         setFetching(true);
-        const user = firebase.auth().currentUser;
+        const user = auth.currentUser;
         const token = await user?.getIdToken();
 
         if (!token) {

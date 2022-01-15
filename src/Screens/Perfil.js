@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { Header } from 'react-native-elements';
-import * as firebase from 'firebase';
+import { getAuth } from '@firebase/auth';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 
@@ -10,12 +10,14 @@ export default function Perfil() {
   const [data, setData] = useState({});
   const [fetching, setFetching] = useState(false);
 
+  const auth = getAuth();
+
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
   const fetchData = async () => {
-    const user = firebase.auth().currentUser;
+    const user = auth.currentUser;
     const token = await user?.getIdToken();
 
     if (!token) {
@@ -56,16 +58,16 @@ export default function Perfil() {
           style={styles.avatar}
           source={{
             uri:
-              firebase.auth().currentUser.photoURL ||
+              auth.currentUser.photoURL ||
               'https://isaojose.com.br/wp-content/uploads/2020/12/blank-profile-picture-mystery-man-avatar-973460.jpg'
           }}
         />
         <View style={styles.body}>
           <View style={styles.bodyContent}>
             <Text style={styles.name}>
-              {firebase.auth().currentUser.displayName}
+              {auth.currentUser.displayName}
             </Text>
-            <Text style={styles.info}>{firebase.auth().currentUser.email}</Text>
+            <Text style={styles.info}>{auth.currentUser.email}</Text>
             <Text style={styles.description}>Pontuação: {data.points}</Text>
             <Text style={styles.description}>Progresso: {data.progress}%</Text>
           </View>
