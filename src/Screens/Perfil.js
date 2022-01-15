@@ -52,7 +52,7 @@ export default function Perfil() {
         centerComponent={{ text: 'Perfil', style: { color: '#fff' } }}
       />
       {/* Renders User Profile */}
-      <View style={styles.container}>
+      <View>
         <View style={styles.header}></View>
         <Image
           style={styles.avatar}
@@ -64,12 +64,10 @@ export default function Perfil() {
         />
         <View style={styles.body}>
           <View style={styles.bodyContent}>
-            <Text style={styles.name}>
-              {auth.currentUser.displayName}
-            </Text>
+            <Text style={styles.name}>{auth.currentUser.displayName}</Text>
             <Text style={styles.info}>{auth.currentUser.email}</Text>
-            <Text style={styles.description}>Pontuação: {data.points}</Text>
-            <Text style={styles.description}>Progresso: {data.progress}%</Text>
+            <Text style={styles.description}>Pontuação: {data.points || 0 }</Text>
+            <Text style={styles.description}>Progresso: {data.progress || 0}%</Text>
           </View>
         </View>
       </View>
@@ -100,10 +98,10 @@ const styles = StyleSheet.create({
   },
   body: {
     marginTop: 40,
-    paddingTop: 20
+    paddingTop: 20,
+    alignSelf: 'stretch',
   },
   bodyContent: {
-    flex: 1,
     alignItems: 'center',
     padding: 30
   },

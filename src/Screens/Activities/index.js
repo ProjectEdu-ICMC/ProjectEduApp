@@ -9,7 +9,11 @@ const Stack = createStackNavigator();
 
 function ActivitiesStack() {
     return (
-        <Stack.Navigator headerMode="none">
+        <Stack.Navigator 
+            screenOptions={{
+                headerShown: false
+            }} 
+        >
             <Stack.Screen name="Modules" component={ModulesScreen} />
             <Stack.Screen name="Topics" component={TopicsScreen} />
             <Stack.Screen name="Slides" component={SlidesScreen} />

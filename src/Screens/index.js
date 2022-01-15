@@ -17,7 +17,12 @@ const Drawer = createDrawerNavigator();
 function AppDrawer() {
     return (
         <NavigationContainer>
-            <Drawer.Navigator initialRouteName="Activities">
+            <Drawer.Navigator 
+                screenOptions={{
+                    headerShown: false
+                }} 
+                initialRouteName="Activities"
+            >
                 <Drawer.Screen
                     name="Perfil"
                     component={PerfilScreen}

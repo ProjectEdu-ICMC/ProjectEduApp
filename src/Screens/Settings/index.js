@@ -16,7 +16,7 @@ function SettingsStack() {
         headerShown: false
       }}
     >
-      <Stack.Screen name="Settings" component={SettingsScreen} />
+      <Stack.Screen name="MainSettings" component={SettingsScreen} />
       <Stack.Screen name="Info" component={InfoScreen} />
       <Stack.Screen name="Help" component={HelpScreen} />
       <Stack.Screen name="Notification" component={NotificationScreen} />
