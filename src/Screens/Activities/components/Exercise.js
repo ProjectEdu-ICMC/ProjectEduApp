@@ -8,12 +8,15 @@ import {
     Dimensions
 } from 'react-native';
 import { useForm } from 'react-hook-form';
+import RadioButton from '../../../components/RadioButton';
 
 function Exercise({ content, type }) {
-    const { register, handleSubmit, setValue, getValues, errors } = useForm();
+    const { register, handleSubmit, setValue, getValues, formState: { errors }, watch } = useForm();
     const [answered, setAnswered] = useState(undefined);
     useEffect(() => {
-        register('answer');
+        register('answer', {
+            required: 'Responda a questão'
+        });
     }, [register]);
 
     const checkAnswerText = (ans) => {
@@ -21,11 +24,18 @@ function Exercise({ content, type }) {
         else setAnswered(false);
     };
 
+    const checkAnswerAlt = (ans) => {
+        if (Number(ans) === Number(content.answerNumber)) setAnswered(true);
+        else setAnswered(false);
+    };
+
+    const watchAnswer = watch('answer');
+
     return (
         <View style={styles.block}>
             <Text style={styles.blockType}>{`Exercício: ${type}`}</Text>
             {type === 'texto' && (
-                <View>
+                <>
                     <Text style={styles.textSubTitle}>{content.question}</Text>
                     <TextInput
                         defaultValue={getValues('answer')}
@@ -40,15 +50,47 @@ function Exercise({ content, type }) {
                         }}
                         editable={answered === undefined}
                     />
+                    { errors.answer && <Text style={styles.textSubTitle, styles.wrongText}>
+                        { errors.answer?.message }
+                    </Text> }
                     <TouchableOpacity
                         style={styles.submitButton}
                         onPress={handleSubmit(({ answer }) =>
                             checkAnswerText(answer)
                         )}
+                        disabled={answered !== undefined}
                     >
                         <Text>Submeter</Text>
                     </TouchableOpacity>
-                </View>
+                </>
+            )}
+            {type === 'alternativa' && (
+                <>
+                    <Text style={styles.textSubTitle}>{content.question}</Text>
+                    {content.alternatives.map((alternative, index) => 
+                        <TouchableOpacity
+                            style={styles.alternative}
+                            onPress={() => setValue('answer', index)}
+                            disabled={answered !== undefined}
+                            key={index}
+                        >
+                            <RadioButton color={ watchAnswer === index ? (answered === true ? '#6a6' : (answered === undefined ? '#000' : '#a66')) : (answered === undefined ? '#000' : '#aaa')} selected={watchAnswer === index}/>
+                            <Text style={{marginLeft: 5}}>{alternative.text}</Text>
+                        </TouchableOpacity>
+                    )}
+                    { errors.answer && <Text style={styles.textSubTitle, styles.wrongText}>
+                        { errors.answer?.message }
+                    </Text> }
+                    <TouchableOpacity
+                        style={styles.submitButton}
+                        onPress={handleSubmit(({ answer }) =>
+                            checkAnswerAlt(answer)
+                        )}
+                        disabled={answered !== undefined}
+                    >
+                        <Text>Submeter</Text>
+                    </TouchableOpacity>
+                </>
             )}
         </View>
     );
@@ -73,25 +115,39 @@ const styles = StyleSheet.create({
         height: 48,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 3
+        borderRadius: 3,
+        alignSelf: 'stretch'
+        //elevation: 2
+    },
+    alternative: {
+        marginTop: 10,
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        flexDirection: 'row',
+        alignSelf: 'stretch'
         //elevation: 2
     },
     correct: {
-        backgroundColor: '#aaffaa',
+        backgroundColor: '#afa',
         borderWidth: 2,
-        borderColor: '#66aa66'
+        borderColor: '#6a6'
     },
     wrong: {
-        backgroundColor: '#ffaaaa',
+        backgroundColor: '#faa',
         borderWidth: 2,
-        borderColor: '#aa6666'
+        borderColor: '#a66'
+    },
+    wrongText: {
+        color: '#e22',
+        marginTop: 8
     },
     singleLineInput: {
         marginTop: 10,
         padding: 8,
         backgroundColor: 'white',
         //elevation: 2,
-        borderRadius: 3
+        borderRadius: 3,
+        alignSelf: 'stretch'
     },
     blockType: {
         fontSize: 20,
