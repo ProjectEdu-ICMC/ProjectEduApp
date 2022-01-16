@@ -1,48 +1,27 @@
 import React from 'react';
 import {
-    Alert,
     StyleSheet,
     Text,
-    ScrollView,
     Image,
-    FlatList,
     TouchableOpacity,
-    Dimensions,
     View,
 } from 'react-native';
-import { Header, Icon } from 'react-native-elements';
 
 function TopicCard({ item, OnPress }) {
+    console.log(item)
     return (
         <TouchableOpacity style={styles.card} onPress={() => OnPress(item)}>
-            <Image style={styles.image} source={{ uri: item.image }} />
             <View style={styles.cardContent}>
                 <Text style={styles.name}>{item.name}</Text>
-                <TouchableOpacity
-                    style={styles.followButtonPlay}
-                    onPress={() => OnPress(item)}
-                >
-                    <Image
-                        style={styles.imagePlay}
-                        source={{
-                            uri:
-                                'https://images.vexels.com/media/users/3/135176/isolated/preview/a6508e565d25ab01f79a35c4319e0083-jogar-bot--o---cone-plana-by-vexels.png',
-                        }}
-                    />
-                </TouchableOpacity>
+                <Image
+                    style={styles.imagePlay}
+                    source={{
+                        uri:
+                            'https://images.vexels.com/media/users/3/135176/isolated/preview/a6508e565d25ab01f79a35c4319e0083-jogar-bot--o---cone-plana-by-vexels.png',
+                    }}
+                />
             </View>
         </TouchableOpacity>
-
-        //ORIGINAL CODE FOR REFERENCE
-        // <TouchableOpacity style={styles.card} onPress={() => {this.clickEventListener(item)}}>
-        //   <Image style={styles.image} source={{uri: item.image}}/>
-        //   <View style={styles.cardContent}>
-        //     <Text style={styles.name}>{item.name}</Text>
-        //     <TouchableOpacity style={styles.followButtonPlay} onPress={()=> this.clickEventListener(item)}>
-        //         <Image style={styles.imagePlay} source={{uri:"https://images.vexels.com/media/users/3/135176/isolated/preview/a6508e565d25ab01f79a35c4319e0083-jogar-bot--o---cone-plana-by-vexels.png"}}/>
-        //     </TouchableOpacity>
-        //   </View>
-        // </TouchableOpacity>
     );
 }
 
@@ -50,20 +29,17 @@ export default TopicCard;
 
 const styles = StyleSheet.create({
     cardContent: {
-        marginTop: 10,
-    },
-    image: {
-        marginLeft: 10,
-        marginTop: 10,
-        width: 90,
-        height: 90,
-        borderRadius: 45,
-        borderWidth: 2,
-        borderColor: '#ebf0f7',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flex: 1,
+        marginLeft: 10
     },
     imagePlay: {
         width: 60,
         height: 60,
+        marginLeft: 10
     },
     card: {
         shadowColor: '#00000021',
@@ -81,26 +57,14 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         padding: 10,
         flexDirection: 'row',
-        borderRadius: 30,
+        borderRadius: 10,
     },
-
     name: {
         fontSize: 15,
-        // flex:1,
-        width: '80%',
-        alignSelf: 'center',
+        flex: 1,
+        // width: '80%',
+        // alignSelf: 'center',
         color: '#000000',
         fontWeight: 'bold',
-    },
-    followButtonPlay: {
-        marginTop: 10,
-        marginBottom: 10,
-        height: 35,
-        width: 100,
-        padding: 10,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'white',
     },
 });

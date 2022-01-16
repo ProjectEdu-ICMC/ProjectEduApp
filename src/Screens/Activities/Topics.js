@@ -2,11 +2,8 @@ import React, { useState, useEffect } from 'react';
 import {
     StyleSheet,
     Text,
-    ScrollView,
-    Image,
     FlatList,
     TouchableOpacity,
-    Dimensions,
     View
 } from 'react-native';
 
@@ -15,10 +12,10 @@ import TopicCard from './components/TopicCard.js';
 
 import {
     useNavigation,
-    useRoute,
-    useNavigationState
+    useRoute
 } from '@react-navigation/native';
 
+import { Icon } from 'react-native-elements';
 import axios from 'axios';
 
 function Topics() {
@@ -43,6 +40,21 @@ function Topics() {
         fetch();
     }, [setTopics, axios, mod]);
 
+    const header = <View style={{ minHeight: 20 }}>
+        <TouchableOpacity 
+            style={styles.rankingButton} 
+            onPress={() => navigation.navigate('Ranking', {
+                moduleId: mod,
+                moduleName: modName
+            })}
+        >
+            <Icon name="sort" color={'#fff'} size={24} />
+            <Text style={styles.rankingButtonText}>Ranking</Text>
+        </TouchableOpacity>
+    </View>
+
+    const footer = <View style={{ minHeight: 20 }}></View>
+
     return (
         <View>
             {/*Screen Header Information */}
@@ -61,9 +73,8 @@ function Topics() {
             />
             {/*Renders Topics with a FlatList */}
             <FlatList
-                //style={styles.contentList}
-                ListFooterComponent={<View style={{ height: 20 }}></View>}
-                columnWrapperStyle={styles.listContainer}
+                ListHeaderComponent={header}
+                ListFooterComponent={footer}
                 data={topics}
                 keyExtractor={(item) => {
                     return item.id;
@@ -81,6 +92,7 @@ function Topics() {
                         />
                     );
                 }}
+                
             />
         </View>
     );
@@ -89,95 +101,17 @@ function Topics() {
 export default Topics;
 
 const styles = StyleSheet.create({
-    logoImage: {
-        width: 200,
-        height: 200
-    },
-    containerLogo: {
+    rankingButton: {
+        backgroundColor: '#40739e',
+        paddingVertical: 15,
+        flexDirection: 'row',
         alignItems: 'center',
-        margin: 10
+        justifyContent: 'center'
     },
-    container: {
-        flex: 1,
-        backgroundColor: '#636e72'
-    },
-    contentList: {
-        flex: 1,
-        paddingBottom: 20
-    },
-    cardContent: {
-        marginLeft: 20,
-        marginTop: 10
-    },
-    image: {
-        width: 90,
-        height: 90,
-        borderRadius: 45,
-        borderWidth: 2,
-        borderColor: '#ebf0f7'
-    },
-    imagePlay: {
-        width: 60,
-        height: 60
-    },
-    card: {
-        shadowColor: '#00000021',
-        shadowOffset: {
-            width: 0,
-            height: 6
-        },
-        shadowOpacity: 0.37,
-        shadowRadius: 7.49,
-        elevation: 12,
+    rankingButtonText: {
+        marginLeft: 10,
+        color: '#fff',
+        fontSize: 16,
 
-        marginLeft: 20,
-        marginRight: 20,
-        marginTop: 20,
-        backgroundColor: 'white',
-        padding: 10,
-        flexDirection: 'row',
-        borderRadius: 30
-    },
-
-    name: {
-        fontSize: 11,
-        flex: 1,
-        alignSelf: 'center',
-        color: '#000000',
-        fontWeight: 'bold'
-    },
-    count: {
-        fontSize: 14,
-        flex: 1,
-        alignSelf: 'center',
-        color: '#6666ff'
-    },
-    followButton: {
-        marginTop: 10,
-        height: 35,
-        width: 100,
-        padding: 10,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 30,
-        backgroundColor: 'white',
-        borderWidth: 1,
-        borderColor: '#dcdcdc'
-    },
-    followButtonPlay: {
-        marginTop: 10,
-        marginBottom: 10,
-        height: 35,
-        width: 100,
-        padding: 10,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'white'
-    },
-    followButtonText: {
-        color: '#dcdcdc',
-        fontSize: 12
     }
 });

@@ -5,7 +5,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import ActivitiesScreen from './Activities';
 import PerfilScreen from './Perfil';
-import RankingScreen from './Ranking';
+// import RankingScreen from './Activities/Ranking';
 import SettingsScreen from './Settings';
 import StatisticsScreen from './Statistics';
 import AchievementScreen from './Achievements';
@@ -53,7 +53,7 @@ function AppDrawer() {
                         )
                     }}
                 />
-                <Drawer.Screen
+                {/* <Drawer.Screen
                     name="Ranking"
                     component={RankingScreen}
                     options={{
@@ -62,7 +62,7 @@ function AppDrawer() {
                             <Icon name="sort" color={tintColor} size={24} />
                         )
                     }}
-                />
+                /> */}
                 <Drawer.Screen
                     name="Statistics"
                     component={StatisticsScreen}
