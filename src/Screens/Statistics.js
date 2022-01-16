@@ -98,7 +98,7 @@ function Statistics() {
           containerStyle={{
             backgroundColor: '#40739e',
             marginBottom: 0,
-            borderRadius: 20
+            borderWidth: 0
           }}
         >
           <View
@@ -117,10 +117,10 @@ function Statistics() {
                 Nome: {auth.currentUser.displayName}
               </Text>
               <Text style={{ fontSize: 17, color: '#ffffff' }}>
-                Pontuação: {stats.total}
+                Pontuação: {stats.total || 0}
               </Text>
               <Text style={{ fontSize: 17, color: '#ffffff' }}>
-                Progresso: {stats.progress}%
+                Progresso: {stats.progress || 0}%
               </Text>
             </View>
           </View>
@@ -130,16 +130,15 @@ function Statistics() {
         <BarChart
           style={{
             marginTop: 10,
-            marginLeft: 20,
+            marginLeft: 15,
             marginRight: 20,
-            borderRadius: 20
           }}
           fromZero={true}
           data={data}
-          width={screenWidth - 40}
+          width={screenWidth - 30}
           height={400}
           chartConfig={chartConfig}
-          verticalLabelRotation={90}
+          verticalLabelRotation={0}
         />
       </ScrollView>
     </View>

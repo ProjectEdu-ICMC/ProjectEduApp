@@ -53,16 +53,6 @@ function AppDrawer() {
                         )
                     }}
                 />
-                {/* <Drawer.Screen
-                    name="Ranking"
-                    component={RankingScreen}
-                    options={{
-                        title: 'Ranking',
-                        drawerIcon: ({ tintColor }) => (
-                            <Icon name="sort" color={tintColor} size={24} />
-                        )
-                    }}
-                /> */}
                 <Drawer.Screen
                     name="Statistics"
                     component={StatisticsScreen}

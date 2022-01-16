@@ -2,24 +2,17 @@ import React from 'react';
 import {
     StyleSheet,
     Text,
-    Image,
     TouchableOpacity,
     View,
 } from 'react-native';
+import StatusBotton from '../../../components/StatusBotton';
 
-function TopicCard({ item, OnPress }) {
-    console.log(item)
+function TopicCard({ item, OnPress, disabled }) {
     return (
-        <TouchableOpacity style={styles.card} onPress={() => OnPress(item)}>
+        <TouchableOpacity style={styles.card} onPress={disabled ? null : () => OnPress(item)}>
             <View style={styles.cardContent}>
-                <Text style={styles.name}>{item.name}</Text>
-                <Image
-                    style={styles.imagePlay}
-                    source={{
-                        uri:
-                            'https://images.vexels.com/media/users/3/135176/isolated/preview/a6508e565d25ab01f79a35c4319e0083-jogar-bot--o---cone-plana-by-vexels.png',
-                    }}
-                />
+                <Text style={[styles.name, disabled && styles.disabledName]}>{item.name}</Text>
+                <StatusBotton status={disabled ? 'done' : 'enabled'} style={{marginVertical: 10}} />
             </View>
         </TouchableOpacity>
     );
@@ -40,6 +33,9 @@ const styles = StyleSheet.create({
         width: 60,
         height: 60,
         marginLeft: 10
+    },
+    disabledImage: {
+        tintColor: "#dddddd"
     },
     card: {
         shadowColor: '#00000021',
@@ -67,4 +63,7 @@ const styles = StyleSheet.create({
         color: '#000000',
         fontWeight: 'bold',
     },
+    disabledName: {
+        color: '#aaaaaa'
+    }
 });

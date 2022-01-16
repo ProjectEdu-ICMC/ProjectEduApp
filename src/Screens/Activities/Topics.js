@@ -18,27 +18,53 @@ import {
 import { Icon } from 'react-native-elements';
 import axios from 'axios';
 
+import { getAuth } from '@firebase/auth';
+
 function Topics() {
     const navigation = useNavigation();
     const route = useRoute();
     const [topics, setTopics] = useState(undefined);
+    const [finishedTopics, setFinishedTopics] = useState(undefined);
 
-    const { mod, modName } = route.params;
+    const auth = getAuth();
+    const { mod, modName, updateFinished } = route.params;
 
     useEffect(() => {
-        const fetch = async () => {
-            axios
-                .get(`http://192.168.0.29:8000/topic/${mod}`)
-                .then((res) => {
-                    setTopics(res.data);
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        };
+        if (updateFinished && updateFinished.topicId)
+        setFinishedTopics({...finishedTopics, [updateFinished.topicId]: true})
+    }, [updateFinished])
 
+    const fetch = async () => {
+        const token = await auth.currentUser?.getIdToken();
+
+        axios
+            .get(`http://192.168.0.29:8000/me`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            .then((res) => {
+                setFinishedTopics(res.data?.finishedTopics)
+
+                axios
+                    .get(`http://192.168.0.29:8000/topic/${mod}`)
+                    .then((res) => {
+                        setTopics(res.data);                            
+                    })
+            .catch((err) => {
+                console.log(err);
+            });
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        
+    };
+
+    useEffect(() => {
         fetch();
-    }, [setTopics, axios, mod]);
+    }, [mod]);
 
     const header = <View style={{ minHeight: 20 }}>
         <TouchableOpacity 
@@ -83,6 +109,7 @@ function Topics() {
                     return (
                         <TopicCard
                             item={item}
+                            disabled={finishedTopics?.hasOwnProperty(item.id)}
                             OnPress={(item) =>
                                 navigation.navigate('Slides', {
                                     topic: item.id,

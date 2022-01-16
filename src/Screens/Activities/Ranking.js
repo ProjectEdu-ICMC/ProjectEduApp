@@ -46,9 +46,9 @@ function Ranking() {
                 }
             })
             .then((res) => {
-                setPoints(res.data.points);
+                setPoints(res.data.points[moduleId]);
                 axios
-                    .get('http://192.168.0.29:8000/ranking')
+                    .get(`http://192.168.0.29:8000/ranking/${moduleId}`)
                     .then((res) => {
                         setData(res.data);
                         setFetching(false);
@@ -121,8 +121,8 @@ function Ranking() {
                     {/*List Top 10 Uses */}
                     {data.map((user, i) => (
                         <ListItem key={i} topDivider={false} bottomDivider={false} style={{marginHorizontal: 15}}>
-                            <ListItem.Title>{user?.name || '-'}</ListItem.Title>
-                            <ListItem.Subtitle>{user?.name ? user?.points || '0' : '-'}</ListItem.Subtitle>
+                            <ListItem.Title>{ user ? user?.name || 'Sem nome' : '-'}</ListItem.Title>
+                            <ListItem.Subtitle>{user ? user?.points || '0' : '-'}</ListItem.Subtitle>
                             <Badge
                                 value={i + 1}
                                 textStyle={{ color: 'white' }}

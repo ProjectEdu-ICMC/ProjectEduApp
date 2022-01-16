@@ -13,8 +13,9 @@ import axios from 'axios';
 
 import Block from './Block';
 import Exercise from './Exercise';
+import { ActivityIndicator } from 'react-native';
 
-function Slide({ type, slide, topicName }) {
+function Slide({ type, slide, topicName, finishTopic }) {
     const navigation = useNavigation();
 
     const [content, setContent] = useState(undefined);
@@ -78,7 +79,8 @@ function Slide({ type, slide, topicName }) {
                             styles.activitiesButton
                         ]}
                         onPress={() => {
-                            navigation.goBack();
+                            finishTopic();
+                            // navigation.goBack();
                         }}
                     >
                         <Text style={styles.buttonText}>Finalizar</Text>
