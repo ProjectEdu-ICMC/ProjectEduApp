@@ -7,32 +7,67 @@ import {
     StyleSheet,
     Dimensions
 } from 'react-native';
-import { useForm } from 'react-hook-form';
+import { set, useForm } from 'react-hook-form';
 import RadioButton from '../../../components/RadioButton';
+import { getAuth } from '@firebase/auth';
+import axios from 'axios';
 
-function Exercise({ content, type }) {
+function Exercise({ content, type, savedState }) {
     const { register, handleSubmit, setValue, getValues, formState: { errors }, watch } = useForm();
-    const [answered, setAnswered] = useState(undefined);
+    const [answered, setAnswered] = useState(false);
+    const [validating, setValidating] = useState(false);
+    const [correct, setCorrect] = useState(undefined);
+
+    const rightAnswer = content?.type === 'texto' ? content?.answer : content?.type === 'alternativa' ? Number(content?.answerNumber) : '';
+    
     useEffect(() => {
         register('answer', {
             required: 'Responda a questão'
         });
     }, [register]);
 
-    const checkAnswerText = (ans) => {
-        if (ans === content.answer) setAnswered(true);
-        else setAnswered(false);
-    };
+    useEffect(() => {
+        if (savedState !== undefined) {
+            setValue('answer', rightAnswer);
+            setAnswered(true);
+            setCorrect(savedState);
+        }
 
-    const checkAnswerAlt = (ans) => {
-        if (Number(ans) === Number(content.answerNumber)) setAnswered(true);
-        else setAnswered(false);
-    };
+    }, [savedState])
+
+    const submitAnswer = async (ans) => {
+        setValidating(true);
+        const auth = getAuth();
+        
+        const token = await auth.currentUser?.getIdToken();
+        axios
+            .post(`http://192.168.0.29:8000/exploration/${content?.id}/submit`,
+            {
+                answer: ans
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            .then((res) => {
+                setValue('answer', rightAnswer);
+                setCorrect(res.data?.correct);
+                setAnswered(true);
+                setValidating(false);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
 
     const watchAnswer = watch('answer');
 
     return (
         <View style={styles.block}>
+            { correct === true && <Text style={[styles.correct, styles.status]}>Exercício respondido: correto!</Text>}
+            { correct === false && <Text style={[styles.wrong, styles.status]}>Exercício respondido: errado!</Text>}
+            { answered && <Text style={[styles.textSubTitle]}>Resposta correta abaixo: </Text>}
             <Text style={styles.blockType}>{`Exercício: ${type}`}</Text>
             {type === 'texto' && (
                 <>
@@ -41,14 +76,13 @@ function Exercise({ content, type }) {
                         defaultValue={getValues('answer')}
                         placeholder="Resposta"
                         style={[
-                            answered === false && styles.wrong,
-                            answered === true && styles.correct,
+                            answered && styles.correct,
                             styles.singleLineInput
                         ]}
                         onChangeText={(text) => {
                             setValue('answer', text);
                         }}
-                        editable={answered === undefined}
+                        editable={!answered}
                     />
                     { errors.answer && <Text style={styles.textSubTitle, styles.wrongText}>
                         { errors.answer?.message }
@@ -56,9 +90,9 @@ function Exercise({ content, type }) {
                     <TouchableOpacity
                         style={styles.submitButton}
                         onPress={handleSubmit(({ answer }) =>
-                            checkAnswerText(answer)
+                            submitAnswer(answer)
                         )}
-                        disabled={answered !== undefined}
+                        disabled={answered || validating}
                     >
                         <Text>Submeter</Text>
                     </TouchableOpacity>
@@ -71,10 +105,14 @@ function Exercise({ content, type }) {
                         <TouchableOpacity
                             style={styles.alternative}
                             onPress={() => setValue('answer', index)}
-                            disabled={answered !== undefined}
+                            disabled={answered}
                             key={index}
                         >
-                            <RadioButton color={ watchAnswer === index ? (answered === true ? '#6a6' : (answered === undefined ? '#000' : '#a66')) : (answered === undefined ? '#000' : '#aaa')} selected={watchAnswer === index}/>
+                            {/* watchAnswer === index ? (answered === true ? '#6a6' : (answered === undefined ? '#000' : '#a66')) : (answered === undefined ? '#000' : '#aaa') */}
+                            <RadioButton 
+                                color={answered ? (watchAnswer === index ? '#6a6' : '#aaa'): '#000'} 
+                                selected={watchAnswer === index}
+                            />
                             <Text style={{marginLeft: 5}}>{alternative.text}</Text>
                         </TouchableOpacity>
                     )}
@@ -84,9 +122,10 @@ function Exercise({ content, type }) {
                     <TouchableOpacity
                         style={styles.submitButton}
                         onPress={handleSubmit(({ answer }) =>
-                            checkAnswerAlt(answer)
+                            // checkAnswerAlt(answer)
+                            submitAnswer(answer)
                         )}
-                        disabled={answered !== undefined}
+                        disabled={answered || validating}
                     >
                         <Text>Submeter</Text>
                     </TouchableOpacity>
@@ -127,6 +166,11 @@ const styles = StyleSheet.create({
         alignSelf: 'stretch'
         //elevation: 2
     },
+    status: {
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        marginBottom: 5,
+    },
     correct: {
         backgroundColor: '#afa',
         borderWidth: 2,
@@ -156,15 +200,8 @@ const styles = StyleSheet.create({
         alignSelf: 'stretch',
         textTransform: 'uppercase',
         fontWeight: 'bold',
-        marginBottom: 5
-    },
-    videoContainer: {
-        width: Dimensions.get('window').width - 106,
-        height: ((Dimensions.get('window').width - 106) * 9) / 16
-    },
-    infoImage: {
-        alignSelf: 'stretch',
-        aspectRatio: 1
+        marginBottom: 5,
+        paddingTop: 10
     },
     textSubTitle: {
         textAlign: 'left',

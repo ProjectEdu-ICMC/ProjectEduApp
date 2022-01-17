@@ -15,7 +15,7 @@ import Block from './Block';
 import Exercise from './Exercise';
 import { ActivityIndicator } from 'react-native';
 
-function Slide({ type, slide, topicName, finishTopic }) {
+function Slide({ type, slide, topicName, finishTopic, finishedExplorations }) {
     const navigation = useNavigation();
 
     const [content, setContent] = useState(undefined);
@@ -101,7 +101,8 @@ function Slide({ type, slide, topicName, finishTopic }) {
                     content={item.value}
                 />
             ) : (
-                <Exercise key={item.id} type={item.type} content={item} />
+                <Exercise key={item.id} type={item.type} content={item} 
+                    savedState={finishedExplorations?.hasOwnProperty(item.id) ? finishedExplorations[item.id] : undefined} />
             )
         );
     // TODO: display content (video, image & text)

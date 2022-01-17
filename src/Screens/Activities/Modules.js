@@ -51,7 +51,6 @@ function Modules() {
         axios
             .get(`http://192.168.0.29:8000/module/${search}`)
             .then((res) => {
-                console.log(res.data);
                 setSearchModules(res.data);
                 setFetching(false);
             })
@@ -81,7 +80,6 @@ function Modules() {
                 }
             )
             .then((res) => {
-                console.log(res.data);
                 setSearchModules(undefined);
                 setModules(res.data);
                 setFetching(false);

@@ -15,28 +15,44 @@ function Slides() {
     const route = useRoute();
 
     const [slides, setSlides] = useState(undefined);
-    console.log(slides)
+    const [finishedExplorations, setFinishedExplorations] = useState(undefined);
+    const auth = getAuth();
 
     const { topic, topicName } = route.params;
 
     useEffect(() => {
         const fetch = async () => {
+            
+            const token = await auth.currentUser?.getIdToken();
+
             axios
-                .get(`http://192.168.0.29:8000/slide/${topic}`)
-                .then((res) => {
-                    setSlides(res.data);
+                .get(`http://192.168.0.29:8000/me`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
                 })
+                .then((res) => {
+                    setFinishedExplorations(res.data?.finishedExplorations)
+
+                    axios
+                        .get(`http://192.168.0.29:8000/slide/${topic}`)
+                        .then((res) => {
+                            setSlides(res.data);                            
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
+                        })
                 .catch((err) => {
                     console.log(err);
                 });
         };
 
         fetch();
-    }, [setSlides, topic, axios]);
+    }, [topic]);
 
     const finishTopic = async () => {
-        const auth = getAuth();
-        
         const token = await auth.currentUser?.getIdToken();
         axios
             .post(`http://192.168.0.29:8000/topic/${topic}/finish`,
@@ -63,7 +79,7 @@ function Slides() {
     const content =
         slides !== undefined && slides?.length > 0
             ? slides.map((page) => (
-                  <Slide key={page.id} slide={page.id} type={page.type} />
+                  <Slide key={page.id} slide={page.id} type={page.type} finishedExplorations={finishedExplorations}/>
               ))
             : [<Slide key="empty_slide" type="empty" />];
 

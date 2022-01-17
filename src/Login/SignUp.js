@@ -91,7 +91,6 @@ export default function SignUp() {
 
     //Function that detects if the inputs aren't null
     const checkTextInput = (data) => {
-        console.log(data);
         if (data.name && data.name != '') {
             if (data.birthday != null) {
                 onSignUpPress(data);

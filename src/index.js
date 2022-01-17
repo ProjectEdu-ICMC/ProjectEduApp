@@ -7,7 +7,6 @@ import { getAuth, onAuthStateChanged } from '@firebase/auth';
 
 function Switch({}) {
     const [screen, setScreen] = useState('loading');
-    console.log(screen);
     
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {

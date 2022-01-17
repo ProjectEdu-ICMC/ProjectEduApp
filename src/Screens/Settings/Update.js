@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { Header, Card } from 'react-native-elements';
 import DialogInput from 'react-native-dialog-input';
-import { getAuth, sendPasswordResetEmail } from '@firebase/auth';
+import { getAuth, sendPasswordResetEmail, updateProfile } from '@firebase/auth';
 
 export default class ImagePickerExample extends React.Component {
   
@@ -53,9 +53,10 @@ export default class ImagePickerExample extends React.Component {
   changeName = (text) => {
     if (text.length > 1) {
       this.setState({ name: text });
-      this.auth.currentUser.updateProfile({
+      updateProfile(this.auth.currentUser, {
         displayName: text
       })
+      // this.auth.currentUser.updateProfile()
       .catch((error) => {
         console.log('error ', error);
         Alert.alert(error.message);

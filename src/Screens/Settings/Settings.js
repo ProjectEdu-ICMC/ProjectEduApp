@@ -44,7 +44,6 @@ class Settings extends React.Component {
   async OnLogout() {
     try {
       await signOut(this.auth);
-      console.log('Logged Out!');
     } catch (error) {
       console.log(error);
     }
