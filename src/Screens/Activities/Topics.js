@@ -96,6 +96,7 @@ function Topics() {
                     text: modName,
                     style: { color: '#fff' }
                 }}
+                containerStyle={{borderBottomWidth: 0}}
             />
             {/*Renders Topics with a FlatList */}
             <FlatList

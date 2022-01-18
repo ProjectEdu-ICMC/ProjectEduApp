@@ -54,29 +54,30 @@ export default function Perfil() {
                     onPress: () => navigation.openDrawer()
                 }}
                 centerComponent={{ text: 'Perfil', style: { color: '#fff' } }}
+                containerStyle={{borderBottomWidth: 0}}
             />
             {/* Renders User Profile */}
             <ScrollView
                 refreshControl={
                     <RefreshControl refreshing={fetching} onRefresh={fetchData} />
                 }
-                style={styles.scrollBox}
             >
                 <View style={styles.header}></View>
-                <Image
-                    style={styles.avatar}
-                    source={{
-                        uri:
-                            auth.currentUser.photoURL ||
-                            'https://isaojose.com.br/wp-content/uploads/2020/12/blank-profile-picture-mystery-man-avatar-973460.jpg'
-                    }}
-                />
-                <View style={styles.body}>
-                    <View style={styles.bodyContent}>
-                        <Text style={styles.name}>{auth.currentUser.displayName}</Text>
-                        <Text style={styles.info}>{auth.currentUser.email}</Text>
-                        <Text style={styles.description}>Pontuação: {points || 0 }</Text>
-                        <Text style={styles.description}>Progresso: {data.progress || 0}%</Text>
+                <View style={styles.box}>
+                    <Image
+                        style={styles.avatar}
+                        source={{
+                            uri:
+                                auth.currentUser.photoURL ||
+                                'https://isaojose.com.br/wp-content/uploads/2020/12/blank-profile-picture-mystery-man-avatar-973460.jpg'
+                        }}
+                    />
+                    <View style={styles.body}>
+                        <View style={styles.bodyContent}>
+                            <Text style={styles.name}>{auth.currentUser.displayName}</Text>
+                            <Text style={styles.info}>{auth.currentUser.email}</Text>
+                            <Text style={styles.points}>{points || 0 } pontos</Text>
+                        </View>
                     </View>
                 </View>
             </ScrollView>
@@ -86,19 +87,30 @@ export default function Perfil() {
 
 const styles = StyleSheet.create({
     header: {
-        backgroundColor: '#3b5998',
+        backgroundColor: '#40739e',
         height: 180
+    },
+    box: {
+        marginBottom: 10,
+        alignSelf: 'center',
+        marginTop: -105,
+        padding: 40,
+        borderRadius: 10,
+        backgroundColor: '#fff',
+        shadowColor: '#00000021',
+        shadowOffset: {
+            width: 0,
+            height: 6,
+        },
+        shadowOpacity: 0.37,
+        shadowRadius: 7.49,
+        elevation: 12,
     },
     avatar: {
         width: 130,
         height: 130,
         borderRadius: 63,
-        borderWidth: 4,
-        borderColor: 'white',
-        marginBottom: 10,
         alignSelf: 'center',
-        position: 'absolute',
-        marginTop: 130
     },
     name: {
         fontSize: 22,
@@ -106,29 +118,30 @@ const styles = StyleSheet.create({
         fontWeight: '600'
     },
     body: {
-        marginTop: 40,
-        paddingTop: 20,
+        marginTop: 10,
         alignSelf: 'stretch',
     },
     bodyContent: {
         alignItems: 'center',
-        padding: 30
+        paddingHorizontal: 10,
     },
     name: {
         fontSize: 28,
-        color: '#696969',
+        color: '#000',
         fontWeight: '600'
     },
     info: {
         fontSize: 16,
-        color: '#00BFFF',
-        marginTop: 10
+        color: '#40739e',
     },
-    description: {
+    points: {
         fontSize: 22,
-        color: '#696969',
-        marginTop: 20,
-        textAlign: 'center'
+        color: '#000',
+        marginTop: 40,
+        textAlign: 'center',
+        backgroundColor: '#fdc75c',
+        padding: 10,
+        borderRadius: 10,
     },
     buttonContainer: {
         marginTop: 10,
