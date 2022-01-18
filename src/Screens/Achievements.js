@@ -193,6 +193,7 @@ export default function Achievements() {
                     color: '#fff',
                     onPress: () => navigation.navigate('Perfil')
                 }}
+                containerStyle={{borderBottomWidth: 0}}
             />
             { user === undefined ? 
             <View style={{flex: 1, alignItems:"center", justifyContent:"center"}}>
