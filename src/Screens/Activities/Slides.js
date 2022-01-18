@@ -9,11 +9,13 @@ import { ActivityIndicator } from 'react-native';
 import { View } from 'react-native';
 
 import { getAuth } from '@firebase/auth';
+import { StyleSheet } from 'react-native';
 
 function Slides() {
     const navigation = useNavigation();
     const route = useRoute();
 
+    const [finishing, setFinishing] = useState(false);
     const [slides, setSlides] = useState(undefined);
     const [finishedExplorations, setFinishedExplorations] = useState(undefined);
     const auth = getAuth();
@@ -53,6 +55,7 @@ function Slides() {
     }, [topic]);
 
     const finishTopic = async () => {
+        setFinishing(true);
         const token = await auth.currentUser?.getIdToken();
         axios
             .post(`http://192.168.0.29:8000/topic/${topic}/finish`,
@@ -70,6 +73,7 @@ function Slides() {
                     },
                     merge: true
                 })
+                setFinishing(false);
             })
             .catch((err) => {
                 console.log(err);
@@ -86,7 +90,7 @@ function Slides() {
     const pages = [
         <Slide type="begin" key="first_slide" topicName={topicName} />,
         ...content,
-        <Slide type="end" key="last_slide" finishTopic={finishTopic} />
+        <Slide type="end" key="last_slide" finishing={finishing} finishTopic={finishTopic} />
     ];
 
     return (
@@ -95,10 +99,53 @@ function Slides() {
             <ActivityIndicator size='large' color='#40739e'/>
         </View>
         :
-        <Swiper showsButtons={false} autoplay={false} loop={false} >
+        <>
+        <Swiper 
+            showsButtons={false} 
+            autoplay={false} 
+            loop={false} 
+            dot={
+                <View style={styles.scroll}>
+                    <View style={styles.dot} />
+                </View>
+            } 
+            activeDot={
+                <View style={styles.scroll}>
+                    <View style={[styles.dot, {backgroundColor: '#40739e'}]} />
+                </View>
+            }
+        >
             {pages}
         </Swiper>
+        </>
     );
 }
+
+const styles = StyleSheet.create({
+    scroll: {
+        height: 16,
+        width: 20,
+        marginLeft: -3,
+        marginRight: -3,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 4,
+        shadowColor: '#00000066',
+        shadowOffset: {
+            width: 0,
+            height: 6,
+        },
+        shadowOpacity: 0.37,
+        shadowRadius: 7.49,
+        elevation: 12,
+    }, 
+    dot: {
+        height: 8,
+        width: 8,
+        backgroundColor: '#aaa',
+        borderRadius: 4,
+    } 
+})
 
 export default Slides;

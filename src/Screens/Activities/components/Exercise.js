@@ -22,7 +22,7 @@ function Exercise({ content, type, savedState }) {
     
     useEffect(() => {
         register('answer', {
-            required: 'Responda a questão'
+            required: 'Responda à questão'
         });
     }, [register]);
 
@@ -65,9 +65,9 @@ function Exercise({ content, type, savedState }) {
 
     return (
         <View style={styles.block}>
-            { correct === true && <Text style={[styles.correct, styles.status]}>Exercício respondido: correto!</Text>}
-            { correct === false && <Text style={[styles.wrong, styles.status]}>Exercício respondido: errado!</Text>}
-            { answered && <Text style={[styles.textSubTitle]}>Resposta correta abaixo: </Text>}
+            { correct === true && <Text style={[styles.correctBar, styles.status]}>Exercício respondido: correto!</Text>}
+            { correct === false && <Text style={[styles.wrongBar, styles.status]}>Exercício respondido: errado!</Text>}
+            { answered && <Text style={[styles.textCorrectAnswer]}>Resposta correta abaixo: </Text>}
             <Text style={styles.blockType}>{`Exercício: ${type}`}</Text>
             {type === 'texto' && (
                 <>
@@ -76,8 +76,8 @@ function Exercise({ content, type, savedState }) {
                         defaultValue={getValues('answer')}
                         placeholder="Resposta"
                         style={[
+                            styles.singleLineInput,
                             answered && styles.correct,
-                            styles.singleLineInput
                         ]}
                         onChangeText={(text) => {
                             setValue('answer', text);
@@ -87,15 +87,6 @@ function Exercise({ content, type, savedState }) {
                     { errors.answer && <Text style={styles.textSubTitle, styles.wrongText}>
                         { errors.answer?.message }
                     </Text> }
-                    <TouchableOpacity
-                        style={styles.submitButton}
-                        onPress={handleSubmit(({ answer }) =>
-                            submitAnswer(answer)
-                        )}
-                        disabled={answered || validating}
-                    >
-                        <Text>Submeter</Text>
-                    </TouchableOpacity>
                 </>
             )}
             {type === 'alternativa' && (
@@ -108,7 +99,6 @@ function Exercise({ content, type, savedState }) {
                             disabled={answered}
                             key={index}
                         >
-                            {/* watchAnswer === index ? (answered === true ? '#6a6' : (answered === undefined ? '#000' : '#a66')) : (answered === undefined ? '#000' : '#aaa') */}
                             <RadioButton 
                                 color={answered ? (watchAnswer === index ? '#6a6' : '#aaa'): '#000'} 
                                 selected={watchAnswer === index}
@@ -119,44 +109,52 @@ function Exercise({ content, type, savedState }) {
                     { errors.answer && <Text style={styles.textSubTitle, styles.wrongText}>
                         { errors.answer?.message }
                     </Text> }
-                    <TouchableOpacity
-                        style={styles.submitButton}
-                        onPress={handleSubmit(({ answer }) =>
-                            // checkAnswerAlt(answer)
-                            submitAnswer(answer)
-                        )}
-                        disabled={answered || validating}
-                    >
-                        <Text>Submeter</Text>
-                    </TouchableOpacity>
                 </>
             )}
+            {!answered && !validating && 
+                <TouchableOpacity
+                    style={styles.submitButton}
+                    onPress={handleSubmit(({ answer }) =>
+                        // checkAnswerAlt(answer)
+                        submitAnswer(answer)
+                    )}
+                    disabled={answered || validating}
+                >
+                    <Text style={styles.submitButtonText}>Submeter</Text>
+                </TouchableOpacity>
+            }
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     block: {
-        flex: 1,
-        width: Dimensions.get('window').width - 60,
         alignItems: 'center',
-        margin: 30,
-        marginTop: 0,
-        padding: 20,
-        borderColor: '#54a0ff',
-        borderWidth: 2,
-        borderRadius: 3,
-        backgroundColor: '#e7f1ff'
+        justifyContent: 'center',
+        marginTop: 30,
+        backgroundColor: '#fff',
+        padding: 30,
+        borderRadius: 10,
+        shadowColor: '#00000021',
+        shadowOffset: {
+            width: 0,
+            height: 6,
+        },
+        shadowOpacity: 0.37,
+        shadowRadius: 7.49,
+        elevation: 12,
     },
     submitButton: {
-        backgroundColor: '#54a0ff',
-        marginTop: 10,
-        height: 48,
+        backgroundColor: '#40739e',
+        marginTop: 20,
+        paddingVertical: 15,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 3,
+        borderRadius: 10,
         alignSelf: 'stretch'
-        //elevation: 2
+    },
+    submitButtonText: {
+        color: '#fff'
     },
     alternative: {
         marginTop: 10,
@@ -167,30 +165,33 @@ const styles = StyleSheet.create({
         //elevation: 2
     },
     status: {
-        paddingHorizontal: 10,
+        paddingHorizontal: 15,
         paddingVertical: 5,
-        marginBottom: 5,
+        marginBottom: 20,
+        borderRadius: 100
     },
     correct: {
-        backgroundColor: '#afa',
         borderWidth: 2,
         borderColor: '#6a6'
+    },    
+    correctBar: {
+        backgroundColor: '#6a6',
+        color: '#fff',
     },
-    wrong: {
-        backgroundColor: '#faa',
-        borderWidth: 2,
-        borderColor: '#a66'
+    wrongBar: {
+        backgroundColor: '#d66',
+        color: '#fff',
     },
     wrongText: {
-        color: '#e22',
+        color: '#d66',
         marginTop: 8
     },
     singleLineInput: {
         marginTop: 10,
         padding: 8,
-        backgroundColor: 'white',
-        //elevation: 2,
-        borderRadius: 3,
+        borderWidth: 1,
+        borderColor: '#ddd',
+        borderRadius: 10,
         alignSelf: 'stretch'
     },
     blockType: {
@@ -201,13 +202,18 @@ const styles = StyleSheet.create({
         textTransform: 'uppercase',
         fontWeight: 'bold',
         marginBottom: 5,
-        paddingTop: 10
     },
     textSubTitle: {
         textAlign: 'left',
         alignSelf: 'stretch',
         fontSize: 15,
         marginTop: 5
+    },
+    textCorrectAnswer: {
+        textAlign: 'left',
+        alignSelf: 'stretch',
+        fontSize: 15,
+        marginBottom: 10,
     }
 });
 

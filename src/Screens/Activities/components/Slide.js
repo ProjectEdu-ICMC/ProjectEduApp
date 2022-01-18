@@ -13,9 +13,9 @@ import axios from 'axios';
 
 import Block from './Block';
 import Exercise from './Exercise';
-import { ActivityIndicator } from 'react-native';
+import { Icon } from 'react-native-elements';
 
-function Slide({ type, slide, topicName, finishTopic, finishedExplorations }) {
+function Slide({ type, slide, topicName, finishTopic, finishedExplorations, finishing }) {
     const navigation = useNavigation();
 
     const [content, setContent] = useState(undefined);
@@ -51,9 +51,13 @@ function Slide({ type, slide, topicName, finishTopic, finishedExplorations }) {
         return (
             <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>
                 <View style={styles.container}>
-                    <Text style={styles.textInfo}>
-                        Esse slide não possui conteúdo ainda
-                    </Text>
+                    <View style={styles.boxContainer}>
+                        <View style={styles.box}>
+                            <Text style={styles.topicText}>
+                                Esse slide não possui conteúdo ainda
+                            </Text>
+                        </View>
+                    </View>
                 </View>
             </ScrollView>
         );
@@ -63,7 +67,12 @@ function Slide({ type, slide, topicName, finishTopic, finishedExplorations }) {
         return (
             <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>
                 <View style={styles.container}>
-                    <Text style={styles.textInfo}>{topicName}</Text>
+                    <View style={styles.boxContainer}>
+                        <View style={styles.box}>
+                            <Text style={styles.topicText}>Tópico</Text>
+                            <Text style={styles.textInfo}>{topicName}</Text>
+                        </View>
+                    </View>
                 </View>
             </ScrollView>
         );
@@ -73,18 +82,26 @@ function Slide({ type, slide, topicName, finishTopic, finishedExplorations }) {
         return (
             <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>
                 <View style={styles.container}>
-                    <TouchableHighlight
-                        style={[
-                            styles.buttonContainer,
-                            styles.activitiesButton
-                        ]}
-                        onPress={() => {
-                            finishTopic();
-                            // navigation.goBack();
-                        }}
-                    >
-                        <Text style={styles.buttonText}>Finalizar</Text>
-                    </TouchableHighlight>
+                    <View style={styles.boxContainer}>
+                        <View style={styles.box}>
+                            <Icon name='celebration' size={96} color="#40739e"/>
+                            <Text style={styles.finishText}>Chegamos ao fim deste tópico!</Text>
+                            {!finishing && 
+                                <TouchableHighlight
+                                    style={[
+                                        styles.buttonContainer,
+                                        styles.activitiesButton
+                                    ]}
+                                    onPress={() => {
+                                        finishTopic();
+                                        // navigation.goBack();
+                                    }}
+                                >
+                                    <Text style={styles.buttonText}>Finalizar</Text>
+                                </TouchableHighlight>
+                            }
+                        </View>
+                    </View>
                 </View>
             </ScrollView>
         );
@@ -109,48 +126,76 @@ function Slide({ type, slide, topicName, finishTopic, finishedExplorations }) {
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>
             <View style={styles.container}>
-                <View style={{ height: 50 }} />
+                {/* <View style={{ height: 50 }} /> */}
                 {blocks}
             </View>
-            <View style={{ height: 80 }} />
         </ScrollView>
     );
 }
 
 const styles = StyleSheet.create({
+    
     container: {
         flexGrow: 1,
-        width: Dimensions.get('window').width,
-        justifyContent: 'center',
-        alignItems: 'center'
+        justifyContent: 'flex-start',
+        alignItems: 'stretch',
+        paddingTop: 20,
+        paddingBottom: 60,
+        paddingHorizontal: 30,
+        backgroundColor: '#40739e',
+        zIndex: -2
+    },
+    topicText: {
+        textTransform: 'uppercase',
+        color: '#aaa',
+        textAlign: 'center'
+    },
+    finishText: {
+        // textTransform: 'uppercase',
+        color: '#000',
+        fontSize: 16,
+        marginTop: 10,
+        textAlign: 'center'
+    },
+    boxContainer: {
+        justifyContent: 'center', 
+        alignSelf: 'stretch', 
+        flex: 1
+    },
+    box: {
+        marginBottom: 10,
+        padding: 30,
+        borderRadius: 10,
+        marginHorizontal: 40,
+        backgroundColor: '#fff',
+        shadowColor: '#00000021',
+        shadowOffset: {
+            width: 0,
+            height: 6,
+        },
+        shadowOpacity: 0.37,
+        shadowRadius: 7.49,
+        elevation: 12,
+        alignItems: 'center',
     },
     textInfo: {
         textAlign: 'center',
-        fontSize: 25,
-        marginTop: 30,
-        marginHorizontal: 20,
-        marginBottom: 0,
-        padding: 10,
-        borderColor: '#54a0ff',
-        borderWidth: 3,
-        borderRadius: 5,
-        backgroundColor: '#E7F1FF'
+        fontSize: 32,
+        textTransform: 'uppercase',
     },
     buttonContainer: {
-        height: 45,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 30,
-        marginBottom: 40,
-        width: 280,
-        borderRadius: 30
+        marginTop: 20,
+        marginBottom: 10,
+        paddingHorizontal: 30,
+        paddingVertical: 15,
+        borderRadius: 30,
+        backgroundColor: '#40739e'
     },
     buttonText: {
         color: 'white'
-    },
-    activitiesButton: {
-        backgroundColor: '#3498db'
     }
 });
 
