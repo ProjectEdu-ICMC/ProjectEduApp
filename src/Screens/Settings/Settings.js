@@ -68,6 +68,7 @@ class Settings extends React.Component {
             color: '#fff',
             onPress: () => this.props.navigation.navigate('Perfil')
           }}
+          containerStyle={{borderBottomWidth: 0}}
         />
         {/*Renders the settings list */}
         {list.map((l, i) => (
@@ -78,6 +79,8 @@ class Settings extends React.Component {
             leftIcon={{
               name: l.icon
             }}
+            topDivider={false} 
+            bottomDivider={false}
             onPress={function () {
               if (l.title == 'Sobre') {
                 this.props.navigation.navigate('Info');

@@ -121,7 +121,12 @@ function Ranking() {
                     </Card>
                     {/*List Top 10 Uses */}
                     {data.map((user, i) => (
-                        <ListItem key={i} topDivider={false} bottomDivider={false} containerStyle={[Number(i) === Number(data.length - 1) && styles.bottomList, styles.listItem]}>
+                        <ListItem 
+                            key={i} 
+                            topDivider={false} 
+                            bottomDivider={false} 
+                            containerStyle={[Number(i) === Number(data.length - 1) && styles.bottomList, styles.listItem]}
+                        >
                             <Badge
                                 value={i + 1}
                                 textStyle={{ color: 'white' }}

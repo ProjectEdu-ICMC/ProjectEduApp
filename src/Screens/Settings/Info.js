@@ -17,6 +17,7 @@ class Info extends React.Component {
                         text: 'Sobre',
                         style: { color: '#fff' }
                     }}
+                    containerStyle={{borderBottomWidth: 0}}
                 />
 
                 <ScrollView contentContainerStyle={styles.container}>
@@ -44,7 +45,7 @@ class Info extends React.Component {
                             funcionalidades:
                         </Text>
 
-                        <Card>
+                        <Card containerStyle={styles.card}>
                             <Card.Title> Atividades </Card.Title>
                             <Card.Image
                                 source={{
@@ -60,7 +61,7 @@ class Info extends React.Component {
                             </Text>
                         </Card>
 
-                        <Card>
+                        <Card containerStyle={styles.card}>
                             <Card.Title> Estatísticas </Card.Title>
                             <Card.Image
                                 source={{
@@ -76,7 +77,7 @@ class Info extends React.Component {
                             </Text>
                         </Card>
 
-                        <Card>
+                        <Card containerStyle={styles.card}>
                             <Card.Title>Ranking</Card.Title>
                             <Card.Image
                                 source={{
@@ -92,7 +93,7 @@ class Info extends React.Component {
                             </Text>
                         </Card>
 
-                        <Card>
+                        <Card containerStyle={styles.card}>
                             <Card.Title>Configurações</Card.Title>
                             <Card.Image
                                 source={{
@@ -140,24 +141,30 @@ export default Info;
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#3b5998',
+        backgroundColor: '#40739e',
         alignItems: 'center',
         paddingBottom: 80
     },
+    card: {
+        borderRadius: 10,
+        elevation: 0,
+        borderWidth: 0,
+        margin: 20
+    },
     textInfo: {
-        margin: 15,
+        margin: 20,
         textAlign: 'center',
         fontSize: 15,
         color: '#ffffff'
     },
     textTopics: {
-        margin: 15,
+        margin: 20,
         textAlign: 'left',
         fontSize: 15,
         color: '#ffffff'
     },
     textTitle: {
-        margin: 15,
+        margin: 20,
         textAlign: 'center',
         fontSize: 40,
         color: '#ffffff'

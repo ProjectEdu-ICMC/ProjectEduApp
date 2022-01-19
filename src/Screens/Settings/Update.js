@@ -118,22 +118,20 @@ export default class ImagePickerExample extends React.Component {
                         text: 'Atualizar Perfil',
                         style: { color: '#fff' }
                     }}
+                    containerStyle={{borderBottomWidth: 0}}
                 />
 
                 {/*Card with User main information */}
-                <Card containerStyle={{ backgroundColor: '#3b5998', borderRadius: 20 }}>
+                <Card containerStyle={styles.card}>
                     {/*Touchable Highlight for setting profile picture */}
                     <Card.Title
-                        style={{
-                            fontSize: 18,
-                            color: '#ffffff'
-                        }}
+                        style={styles.cardTitle}
                     >
                         Informação Pessoal
                     </Card.Title>
                     <View style={styles.inputContainerPhoto}>
                         <Image
-                            style={{ width: 100, height: 100, borderRadius: 20 }}
+                            style={styles.cardImage}
                             source={{
                                 uri:
                                     this.auth.currentUser.photoURL ||
@@ -142,23 +140,23 @@ export default class ImagePickerExample extends React.Component {
                         />
                     </View>
                     {/*User main information */}
-                    <View style={{ paddingTop: 15 }}>
+                    <View>
                         <Text style={styles.textInfo}>Nome: {this.state.name}</Text>
-                        <View style={{ flexDirection: 'row-reverse', height: 30 }}>
+                        <View style={styles.editButtonWrapper}>
                             <TouchableHighlight
-                                style={[styles.editButtonContainer, styles.recoverButton]}
+                                style={styles.editButtonContainer}
                                 onPress={() => this.setState({ isEditingName: true })}
                             >
-                                <Text style={styles.recoverText}>Editar nome</Text>
+                                <Text style={styles.editText}>Editar nome</Text>
                             </TouchableHighlight>
                         </View>
                         <Text style={styles.textInfo}>Email: {this.state.email}</Text>
-                        <View style={{ flexDirection: 'row-reverse', height: 30 }}>
+                        <View style={styles.editButtonWrapper}>
                             <TouchableHighlight
-                                style={[styles.editButtonContainer, styles.recoverButton]}
+                                style={styles.editButtonContainer}
                                 onPress={() => alert('Edit email presses')}
                             >
-                                <Text style={styles.recoverText}>Editar email</Text>
+                                <Text style={styles.editText}>Editar email</Text>
                             </TouchableHighlight>
                         </View>
                     </View>
@@ -179,7 +177,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        backgroundColor: '#3b5998'
+        backgroundColor: '#40739e'
     },
     inputContainerPhoto: {
         marginBottom: 0,
@@ -191,14 +189,15 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         fontSize: 16,
         textAlign: 'center',
-        color: '#ffffff'
+        color: '#000',
+        marginTop: 15
     },
     textPhoto: {
         marginTop: 20,
         marginBottom: 20,
         fontSize: 12,
         textAlign: 'center',
-        color: '#ffffff'
+        color: '#000'
     },
     buttonContainer: {
         height: 45,
@@ -207,7 +206,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginVertical: 20,
         width: 250,
-        borderRadius: 30
+        borderRadius: 30,
+    },
+    editButtonWrapper: { 
+        flexDirection: 'row', 
+        height: 30,
+        justifyContent: 'center'
     },
     editButtonContainer: {
         height: 30,
@@ -216,12 +220,30 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginBottom: 50,
         width: 100,
-        borderRadius: 30
+        borderRadius: 30,
+        backgroundColor: '#40739e',
+    },
+    editText: {
+        color: '#fff'
     },
     recoverButton: {
-        backgroundColor: '#000000'
+        backgroundColor: '#fff'
     },
     recoverText: {
-        color: 'white'
-    }
+        color: '#000'
+    },
+    card: { 
+        backgroundColor: '#fff', 
+        borderRadius: 10,
+        borderWidth: 0
+    },
+    cardTitle: {
+        fontSize: 18,
+        color: '#000'
+    },
+    cardImage: { 
+        width: 100, 
+        height: 100, 
+        borderRadius: 50
+    },
 });
