@@ -84,6 +84,7 @@ function Modules() {
                 }
             )
             .then((res) => {
+                setValue('search', '');
                 setSearchModules(undefined);
                 setModules(res.data);
                 setFetching(false);
